@@ -6,7 +6,8 @@ import fs from 'fs'
 import path from 'path'
 import os from 'os'
 
-const BASE_URL = 'https://app.postiz.com'
+// Override via POSTIZ_BASE_URL env var (e.g. self-hosted or if SaaS domain changes)
+const BASE_URL = (process.env.POSTIZ_BASE_URL || 'https://app.postiz.com').replace(/\/$/, '')
 
 function getApiKey(): string {
   if (process.env.POSTIZ_API_KEY) return process.env.POSTIZ_API_KEY

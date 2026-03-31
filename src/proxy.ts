@@ -87,10 +87,12 @@ function hostMatches(pattern: string, hostname: string): boolean {
 function nextResponseWithNonce(request: NextRequest): { response: NextResponse; nonce: string } {
   const nonce = crypto.randomBytes(16).toString('base64')
   const googleEnabled = !!(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || process.env.GOOGLE_CLIENT_ID)
+  const supabaseEnabled = !!process.env.NEXT_PUBLIC_SUPABASE_URL
   const requestHeaders = buildNonceRequestHeaders({
     headers: request.headers,
     nonce,
     googleEnabled,
+    supabaseEnabled,
   })
   const response = NextResponse.next({
     request: {
@@ -108,8 +110,9 @@ function addSecurityHeaders(response: NextResponse, _request: NextRequest, nonce
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
 
   const googleEnabled = !!(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || process.env.GOOGLE_CLIENT_ID)
+  const supabaseEnabled = !!process.env.NEXT_PUBLIC_SUPABASE_URL
   const effectiveNonce = nonce || crypto.randomBytes(16).toString('base64')
-  response.headers.set('Content-Security-Policy', buildMissionControlCsp({ nonce: effectiveNonce, googleEnabled }))
+  response.headers.set('Content-Security-Policy', buildMissionControlCsp({ nonce: effectiveNonce, googleEnabled, supabaseEnabled }))
 
   return response
 }

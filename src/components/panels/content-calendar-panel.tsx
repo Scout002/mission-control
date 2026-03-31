@@ -841,7 +841,7 @@ function CalendarCard({
       </div>
 
       {/* Action buttons — status-dependent */}
-      {(isDraft || isSuggested) && (
+      {(isDraft || isSuggested || isReady) && (
         <div className="px-4 pb-4 flex gap-2">
           <button
             onClick={() => onApprove?.(item.id)}
@@ -1024,27 +1024,26 @@ export function ContentCalendarPanel() {
     }
   }
 
-  // Bulk actions
+  // Bulk actions — route each through the approve API so Postiz gets triggered
   const handleBulkApprove = async () => {
     setActionError(null)
-    const draftIds = drafts.map(i => i.id)
-    if (draftIds.length === 0) return
+    const approvable = [...drafts, ...ready].filter(i => i.status === 'draft' || i.status === 'suggested' || i.status === 'ready')
+    if (approvable.length === 0) return
 
-    const { error } = await supabase
-      .from('content_calendar')
-      .update({ status: 'approved' })
-      .in('id', draftIds)
-
-    if (error) {
-      setActionError(`Bulk approve failed: ${error.message}`)
-    } else {
-      // Auto-trigger generation for items with asset_mode === 'generate'
-      const generateItems = drafts.filter(i => (i.metadata as AssetInfo | null)?.asset_mode === 'generate')
-      for (const item of generateItems) {
-        await handleStart({ ...item, status: 'approved' })
-      }
-      await fetchItems()
+    const errors: string[] = []
+    for (const item of approvable) {
+      const res = await fetch('/api/content-calendar/approve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: item.id }),
+      })
+      const result = await res.json().catch(() => ({ error: 'Unknown error' }))
+      if (!res.ok) errors.push(`${item.title}: ${result.error ?? res.status}`)
+      else if (result._postizError) errors.push(`${item.title}: Postiz error — ${result._postizError}`)
     }
+
+    if (errors.length > 0) setActionError(`Bulk approve issues: ${errors.join(' | ')}`)
+    await fetchItems()
   }
 
   const handleBulkReject = async () => {

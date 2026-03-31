@@ -60,6 +60,7 @@ const menuItems: MenuItem[] = [
   { id: 'channels', label: 'Channels', icon: '📡', description: 'Messaging platform status' },
   { id: 'nodes', label: 'Nodes', icon: '🖥', description: 'Connected instances' },
   { id: 'exec-approvals', label: 'Approvals', icon: '✅', description: 'Exec approval queue' },
+  { id: 'content-calendar', label: 'Content Calendar', icon: '📆', description: 'Plan & schedule content' },
   { id: 'debug', label: 'Debug', icon: '🐛', description: 'System diagnostics' },
 ]
 

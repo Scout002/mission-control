@@ -89,6 +89,7 @@
     "webhooks": "Webhooks",
     "alerts": "Оповещения",
     "github": "GitHub",
+    "contentCalendar": "",
     "security": "Безопасность",
     "users": "Пользователи",
     "audit": "Аудит",

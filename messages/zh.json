@@ -89,6 +89,7 @@
     "webhooks": "Webhooks",
     "alerts": "告警",
     "github": "GitHub",
+    "contentCalendar": "",
     "security": "安全",
     "users": "用户",
     "audit": "审计",

@@ -58,6 +58,7 @@ const navGroups: NavGroup[] = [
       { id: 'webhooks', label: 'Webhooks', icon: <WebhookIcon />, priority: false },
       { id: 'alerts', label: 'Alerts', icon: <AlertIcon />, priority: false },
       { id: 'github', label: 'GitHub', icon: <GitHubIcon />, priority: false },
+      { id: 'content-calendar', label: 'Content Calendar', icon: <ContentCalendarIcon />, priority: false },
     ],
   },
   {
@@ -109,6 +110,7 @@ const navItemTranslationKeys: Record<string, string> = {
   integrations: 'integrations',
   debug: 'debug',
   settings: 'settings',
+  'content-calendar': 'contentCalendar',
 }
 
 // Map group IDs to translation keys in the 'nav.group' namespace
@@ -1508,6 +1510,18 @@ function MonitorIcon() {
       <rect x="1" y="2" width="14" height="10" rx="1.5" />
       <polyline points="4,9 6,6 8,8 12,4" />
       <path d="M5 14h6" />
+    </svg>
+  )
+}
+
+function ContentCalendarIcon() {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="1" y="2" width="14" height="13" rx="1.5" />
+      <path d="M5 1v2M11 1v2" />
+      <path d="M1 6h14" />
+      <rect x="3" y="8" width="3" height="3" rx="0.5" fill="currentColor" stroke="none" />
+      <rect x="7" y="8" width="3" height="3" rx="0.5" fill="currentColor" stroke="none" />
     </svg>
   )
 }
